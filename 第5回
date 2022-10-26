@@ -1,0 +1,41 @@
+#include <stdio.h>
+int main() {
+  double d = 5.0-1.0; //積分範囲
+  double total1,x1,y1, total2,x2,y2,total3,diff, h, x3, y3;
+  
+  printf("%10s%12s%10s%10s%15s\n",
+         "#Division", "IntegralU",
+         "IntegralL", "Diff","Trapezoid");
+  for (int n=2; n<=32768; n*=2){
+    h = d / n; //幅h
+ // 内接矩形積分値
+    total1 = 0.0;
+    total2 = 0.0;
+    total3 = 0.0;
+    for (int i=0; i<n; i++) {
+      x1 = i*h + 1.0;
+      y1 = x1*x1;
+      x2 = (i+1)*h + 1.0;
+      y2 = x2*x2;
+      total1 = total1 + y1*h;
+      total2 = total2 + y2*h;
+      total3 = total3 + ((y1 + y2) * h) / 2;
+    }
+    diff = total2 - total1;
+    printf("%10d%12.7f%12.7f%12.7f%12.7f\n",
+          n, total1, total2, diff ,total3);
+  }
+
+  /*
+  for(int n=2; n<=1024; n*=2){
+    h = d / n;
+    total3 = 0.0;
+    for(int i = 0; i < n; i++){
+      x3 = ((i*h + 1.0) + ((i+1)*h + 1.0)) / 2;
+      y3 = x3 * x3;
+      total3 = total3 + y3 * h;
+    }
+    printf("%12.7f\n", total3);
+  }
+  */
+}
