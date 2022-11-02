@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <math.h>
+double f(double x)  {
+  int s = 3*x*x+4;
+  return s;
+}
+int main() {
+double d0 = -100.0, d1= 100.0;//積分範囲d0からd1
+double err_bound = 0.0001;//反復を終了する更新量の閾値
+int n_init = 2, n = n_init; //分割数n、初期値n_init
+double total3 = 0, total3_pre = 0; //積分値、及び、1反復前の積分値を記憶する変数
+printf("%10s%15s%15s\n", "#Division", "Trapezoid", "DiffUpdate");
+do {
+double h = (d1 - d0)/ n;
+total3_pre = total3; //1反復前の積分値を記録
+total3 = 0.0; //積分値を記憶する変数を0に初期化
+for (int i = 0; i <= n - 1; i++) { // iは0からn-1まで1ずつ増加
+double x;
+x = d0 + i*h;
+total3 = total3 + (f(x) + f(x + h))*h/2;//まのまのまの
+}
+printf("%10d%15.3f", n, total3);
+if (n>n_init) printf("%15.3f\n", fabs( total3-total3_pre ) );
+else printf("%15s\n","**********");
+n *= 2; //次のループではnを2倍にする。
+} while (fabs(total3 - total3_pre) > err_bound || n == n_init*2); //差が一定値より大きい or 初回は継続
+}
